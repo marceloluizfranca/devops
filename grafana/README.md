@@ -39,6 +39,12 @@ helm upgrade --install grafana grafana-community/grafana \
 
 Em atualizações, rode só o `helm upgrade`. O Secret já existe.
 
+Por fim, publique os dashboards da plataforma:
+
+```bash
+kubectl --context kind-splic apply -k grafana/dashboards
+```
+
 ## Senha do admin
 
 ```bash
@@ -63,7 +69,21 @@ kubectl --context kind-splic -n monitoring get pods -l app.kubernetes.io/name=gr
 
 O pod deve estar `2/2 Running`. Na interface, em *Connections → Data sources → Prometheus*, o botão *Save & test* deve retornar "Successfully queried the Prometheus API".
 
-## Adicionar um dashboard
+## Dashboards da plataforma
+
+Ficam em `dashboards/` e são publicados na pasta *Plataforma* pelo `kubectl apply -k` acima. O kustomize gera um ConfigMap por arquivo, já com o label e a pasta.
+
+| Dashboard | Conteúdo |
+|---|---|
+| **Recursos dos pods** (`recursos-pods.json`) | Pods prontos, restarts, CPU e memória em uso comparados a requests e limites, tráfego de rede e uma tabela de uso x requests x limites por container. Tem filtros de namespace e pod. |
+
+Os dashboards padrão do kube-prometheus-stack (Kubernetes, node-exporter, Prometheus) também ficam disponíveis, na pasta *General*.
+
+O dashboard de recursos aceita o namespace na URL, para links a partir de dashboards das aplicações: `/d/recursos-pods/recursos-dos-pods?var-namespace=<namespace>`.
+
+Para alterar um dashboard da plataforma, edite na interface, exporte o JSON (*Export → Export as JSON*), substitua o arquivo em `dashboards/` e rode o `kubectl apply -k` de novo.
+
+## Adicionar um dashboard de aplicação
 
 Monte o dashboard na interface e exporte o JSON (*Share → Export*). Depois publique o JSON como ConfigMap no namespace da aplicação:
 

@@ -46,7 +46,7 @@ A ordem importa: o Prometheus instala as CRDs (`ServiceMonitor`, `PrometheusRule
 
 1. [Criar o cluster](kind/README.md)
 2. [Instalar o Prometheus](prometheus/README.md)
-3. [Instalar o Grafana](grafana/README.md)
+3. [Instalar o Grafana e os dashboards da plataforma](grafana/README.md)
 4. [Instalar o controller do ARC](github-runners/README.md#instalação-do-controller)
 
 Os comandos são executados a partir da raiz deste repositório e usam `--kube-context kind-splic`, para evitar aplicar algo em outro cluster por engano.
@@ -71,7 +71,7 @@ Checklist para um novo repositório:
 2. **Runner scale set.** Instalar um scale set apontando para o repositório e usar o nome dele em `runs-on` no workflow.
 3. **Métricas.** Expor `/metrics` e incluir um `ServiceMonitor` nos manifests da aplicação. Ver [prometheus](prometheus/README.md#monitorar-uma-aplicação).
 4. **Alertas.** Opcionalmente, incluir um `PrometheusRule` nos manifests.
-5. **Dashboard.** Opcionalmente, incluir um ConfigMap com o label `grafana_dashboard: "1"`. Ver [grafana](grafana/README.md#adicionar-um-dashboard).
+5. **Dashboard.** Opcionalmente, incluir um ConfigMap com o label `grafana_dashboard: "1"`. Ver [grafana](grafana/README.md#adicionar-um-dashboard-de-aplicação). O consumo de recursos da aplicação já aparece no dashboard *Recursos dos pods*, filtrando pelo namespace.
 
 ## Convenções
 
