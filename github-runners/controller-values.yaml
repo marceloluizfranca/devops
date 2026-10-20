@@ -1,0 +1,10 @@
+# Controller do Actions Runner Controller (ARC): observa os scale sets
+# e cria os pods de runner conforme os jobs chegam do GitHub.
+replicaCount: 1
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    memory: 256Mi
