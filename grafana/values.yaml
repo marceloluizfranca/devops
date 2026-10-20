@@ -1,0 +1,57 @@
+# Grafana apontando para o Prometheus do diretório prometheus/
+
+# Senha gerada pelo install.sh e guardada no Secret grafana-admin
+admin:
+  existingSecret: grafana-admin
+  userKey: admin-user
+  passwordKey: admin-password
+
+service:
+  type: NodePort
+  port: 80
+  # Mapeada para localhost:30300 na configuração do kind
+  nodePort: 30300
+
+# Tudo é provisionado por código, então não precisa de disco
+persistence:
+  enabled: false
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        uid: prometheus
+        url: http://prometheus-operated.monitoring.svc:9090
+        access: proxy
+        isDefault: true
+        jsonData:
+          timeInterval: 15s
+
+# O sidecar carrega todo ConfigMap com o label grafana_dashboard=1: os do
+# kube-prometheus-stack e os deste diretório.
+sidecar:
+  dashboards:
+    enabled: true
+    label: grafana_dashboard
+    labelValue: "1"
+    searchNamespace: monitoring
+    folderAnnotation: grafana_folder
+    provider:
+      foldersFromFilesStructure: true
+
+grafana.ini:
+  analytics:
+    check_for_updates: false
+    reporting_enabled: false
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    memory: 384Mi
+
+testFramework:
+  enabled: false
