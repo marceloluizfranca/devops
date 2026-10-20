@@ -46,12 +46,15 @@ grafana.ini:
     check_for_updates: false
     reporting_enabled: false
 
+# O chart define GOMEMLIMIT como 90% do limite de memória. O Grafana 13 com
+# os dashboards do kube-prometheus-stack passa de 350Mi; com limite baixo o
+# Go entra em coleta de lixo contínua e o processo para de responder.
 resources:
   requests:
-    cpu: 50m
-    memory: 128Mi
-  limits:
+    cpu: 100m
     memory: 384Mi
+  limits:
+    memory: 1Gi
 
 testFramework:
   enabled: false
