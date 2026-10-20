@@ -1,4 +1,4 @@
-# Cluster local "splic" para a demo da entrevista
+# Cluster local "splic"
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 name: splic
@@ -7,7 +7,7 @@ nodes:
     labels:
       ingress-ready: "true"
     extraPortMappings:
-      # Portas do host para expor a API de clima e o Grafana via NodePort
+      # Portas do host ligadas a NodePorts: 30080 para aplicações, 30300 para o Grafana
       - containerPort: 30080
         hostPort: 30080
         protocol: TCP

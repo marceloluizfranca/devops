@@ -7,7 +7,7 @@ grafana:
   # (label grafana_dashboard=1) para o sidecar do Grafana carregar.
   forceDeployDashboards: true
 
-# Sem Alertmanager na demo: os alertas ficam visíveis na tela "Alerts" do Prometheus
+# Sem Alertmanager: os alertas ficam visíveis na tela "Alerts" do Prometheus
 alertmanager:
   enabled: false
 

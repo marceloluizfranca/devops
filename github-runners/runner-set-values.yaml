@@ -1,0 +1,20 @@
+# Valores comuns a todos os runner scale sets.
+# O que muda por repositório (githubConfigUrl, secret do token e
+# ServiceAccount) é passado com --set na instalação. Ver README.
+
+# Escala a zero quando não há jobs: um pod por job, descartado ao final
+minRunners: 0
+maxRunners: 2
+
+template:
+  spec:
+    containers:
+      - name: runner
+        image: ghcr.io/actions/actions-runner:latest
+        command: ["/home/runner/run.sh"]
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            memory: 1Gi

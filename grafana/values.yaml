@@ -1,6 +1,6 @@
 # Grafana apontando para o Prometheus do diretório prometheus/
 
-# Senha gerada pelo install.sh e guardada no Secret grafana-admin
+# Usuário e senha lidos do Secret grafana-admin, criado fora do Git (ver README)
 admin:
   existingSecret: grafana-admin
   userKey: admin-user
@@ -29,14 +29,14 @@ datasources:
         jsonData:
           timeInterval: 15s
 
-# O sidecar carrega todo ConfigMap com o label grafana_dashboard=1: os do
-# kube-prometheus-stack e os deste diretório.
+# O sidecar carrega todo ConfigMap com o label grafana_dashboard=1, em
+# qualquer namespace: os do kube-prometheus-stack e os das aplicações.
 sidecar:
   dashboards:
     enabled: true
     label: grafana_dashboard
     labelValue: "1"
-    searchNamespace: monitoring
+    searchNamespace: ALL
     folderAnnotation: grafana_folder
     provider:
       foldersFromFilesStructure: true
