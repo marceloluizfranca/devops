@@ -1,0 +1,38 @@
+# kube-prometheus-stack: Prometheus Operator, Prometheus, node-exporter e
+# kube-state-metrics. O Grafana é instalado à parte, pelo diretório grafana/.
+
+grafana:
+  enabled: false
+  # Mesmo sem o Grafana, publica os dashboards do stack como ConfigMaps
+  # (label grafana_dashboard=1) para o sidecar do Grafana carregar.
+  forceDeployDashboards: true
+
+# Sem Alertmanager na demo: os alertas ficam visíveis na tela "Alerts" do Prometheus
+alertmanager:
+  enabled: false
+
+# No kind esses componentes escutam só em 127.0.0.1 e o Prometheus não
+# consegue coletá-los. Desligados para não gerar targets e alertas falsos.
+kubeEtcd:
+  enabled: false
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeProxy:
+  enabled: false
+
+prometheus:
+  prometheusSpec:
+    retention: 2d
+    # Descobre ServiceMonitors, PodMonitors e regras de qualquer namespace,
+    # sem exigir o label "release" desta instalação.
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    resources:
+      requests:
+        cpu: 100m
+        memory: 400Mi
+      limits:
+        memory: 1Gi
